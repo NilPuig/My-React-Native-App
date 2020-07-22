@@ -1,17 +1,27 @@
 {
   "name": "MyReactNativeApp",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "apk": "cd android && ./gradlew assembleRelease",
+    "aab": "cd android && ./gradlew bundleRelease -x bundleReleaseJsAndAssets"
   },
   "dependencies": {
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-navigation/bottom-tabs": "^5.7.2",
+    "@react-navigation/native": "^5.7.1",
+    "@react-navigation/stack": "^5.7.1",
     "react": "16.13.1",
-    "react-native": "0.63.1"
+    "react-native": "0.63.1",
+    "react-native-gesture-handler": "^1.7.0",
+    "react-native-reanimated": "^1.10.1",
+    "react-native-safe-area-context": "^3.1.1",
+    "react-native-screens": "^2.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
@@ -19,11 +29,23 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "babel-jest": "^26.1.0",
     "eslint": "^7.5.0",
+    "husky": ">=4",
     "jest": "^26.1.0",
+    "lint-staged": ">=10",
     "metro-react-native-babel-preset": "^0.61.0",
+    "prettier": "2.0.5",
     "react-test-renderer": "16.13.1"
   },
   "jest": {
     "preset": "react-native"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   }
 }
