@@ -18,16 +18,22 @@ const HomeScreen = () => {
     const {
       urls: { regular: imageUrl },
       likes,
+      created_at: createdAt,
+      description,
+      alt_description: altDescription,
       user: {
         name: userName,
         profile_image: { medium: profileImage },
       },
     } = { ...item };
+    const caption = description || altDescription;
 
     return (
       <Photo
         imageUrl={imageUrl}
+        createdAt={createdAt}
         likes={likes}
+        caption={caption}
         userName={userName}
         profileImage={profileImage}
       />
@@ -43,6 +49,7 @@ const HomeScreen = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefreshImages} />
       }
       renderItem={renderItem}
+      showsVerticalScrollIndicator={false}
     />
   );
 };
