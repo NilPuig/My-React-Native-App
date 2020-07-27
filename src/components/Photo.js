@@ -17,25 +17,31 @@ const Photo = ({
     container,
     imageStyle,
     photoInfoContainer,
-    boltText,
+    boldText,
     descriptionContainer,
     timeSinceStyle,
     heartIcon,
+    profileImageStyle,
+    userInfoContainer,
   } = styles;
 
-  const parsedLikes = numberWithCommas(likes);
-  const timeSince = getTimeSince(createdAt);
   const [liked, setLiked] = useState(false);
+  const parsedLikes = numberWithCommas(liked ? likes + 1 : likes);
+  const timeSince = getTimeSince(createdAt);
 
   return (
     <View style={container}>
-      <View style={descriptionContainer}>
-        <Image style={imageStyle} source={{ uri: profileImage }} />
-        <Text style={boltText}>{userName}</Text>
+      <View style={userInfoContainer}>
+        <Image style={profileImageStyle} source={{ uri: profileImage }} />
+        <Text style={boldText}>{userName}</Text>
       </View>
 
       <Image style={imageStyle} source={{ uri: imageUrl }} />
-      <TouchableOpacity activeOpacity={1} onPress={() => setLiked(!liked)}>
+      <TouchableOpacity
+        style={photoInfoContainer}
+        activeOpacity={1}
+        onPress={() => setLiked(!liked)}
+      >
         <Icon
           name={liked ? 'heart' : 'hearto'}
           color={liked ? colors.heartColor : colors.textPrimary}
@@ -44,11 +50,11 @@ const Photo = ({
         />
       </TouchableOpacity>
       <View style={photoInfoContainer}>
-        <Text style={boltText}>
+        <Text style={boldText}>
           {parsedLikes} {likes !== 1 ? 'likes' : 'like'}
         </Text>
         <View style={descriptionContainer}>
-          <Text style={boltText}>{userName}</Text>
+          <Text style={boldText}>{userName}</Text>
           {caption && <Text>{caption}</Text>}
         </View>
 
@@ -60,22 +66,35 @@ const Photo = ({
   );
 };
 
+const profileImageWidth = 30;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 5,
+    marginBottom: 10,
   },
   userInfoContainer: {
     flexDirection: 'row',
+    margin: 8,
+    marginBottom: 12,
+    alignItems: 'center',
   },
   imageStyle: {
     aspectRatio: 1.5,
     width: '100%',
   },
+  profileImageStyle: {
+    height: profileImageWidth,
+    width: profileImageWidth,
+    borderRadius: profileImageWidth / 2,
+    marginRight: 10,
+  },
   photoInfoContainer: {
     margin: 12,
+    marginBottom: 0,
   },
-  boltText: {
+  boldText: {
     fontWeight: '600',
   },
   descriptionContainer: {
@@ -86,11 +105,6 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     color: '#404040',
     fontSize: 12,
-  },
-  heartIcon: {
-    paddingHorizontal: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 
