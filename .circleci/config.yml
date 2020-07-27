@@ -1,0 +1,86 @@
+version: 2.1
+jobs:
+  node:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:10
+    steps:
+      - run:
+          name: Linux update
+          command: |
+            sudo apt-get update 
+            sudo apt-get install -y lsb-release libudev-dev libusb-dev usbutils
+            sudo apt-get clean all
+            lsb_release -a
+      - checkout:
+          path: ~/repo
+      - attach_workspace:
+          at: ~/repo
+      - restore_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+      - restore_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+      - run: yarn && npx jetify
+      - save_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - node_modules
+  android:
+    working_directory: ~/repo/android
+    docker:
+      - image: circleci/android:api-29-node
+    environment:
+      _JAVA_OPTIONS: '-Xmx1500m'
+      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx4g -XX:+HeapDumpOnOutOfMemoryError"'
+    steps:
+      - checkout:
+          path: ~/repo
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Accept SDK licenses
+          command: (echo y; echo y; echo y; echo y; echo y; echo y) | sdkmanager --licenses
+      - run:
+          name: Check MD5 on files
+          command: |
+            md5sum ~/repo/android/build.gradle
+            md5sum ~/repo/android/app/build.gradle
+            cat ~/repo/android/app/build.gradle | sed -n -e '/dependencies/,$p' > android.app.build.gradle.deps
+      - run:
+          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+          command: sudo chmod +x ./gradlew
+      - save_cache:
+          key: android-jars-v1-{{ checksum "~/repo/android/build.gradle" }}-{{ checksum  "android.app.build.gradle.deps" }}
+          paths:
+            - ~/.gradle
+      - run:
+          name: Build Android APK
+          command: ./gradlew assembleRelease --init-script init.gradle
+      - store_artifacts:
+          path: ~/repo/android/app/build/outputs/apk/release/
+          destination: apks/
+      - run:
+          name: Build App Bundle
+          command: ./gradlew bundleRelease -x bundleReleaseJsAndAssets --init-script init.gradle
+      - store_artifacts:
+          path: ~/repo/android/app/build/outputs/bundle/release/
+          destination: aabs/
+workflows:
+  android:
+    jobs:
+      - node:
+          filters:
+            branches:
+              only:
+                - master
+      - android:
+          requires:
+            - node
