@@ -81,6 +81,7 @@ workflows:
             branches:
               only:
                 - master
+                - feature/circleci
       - android:
           requires:
             - node
