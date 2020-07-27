@@ -9,6 +9,7 @@ import {
 import { Context as ApiContext } from '../stores/ApiContext';
 import Photo from '../components/Photo';
 import { isCloseToBottom } from '../utils';
+import FastImage from 'react-native-fast-image';
 
 const HomeScreen = () => {
   const {
@@ -21,7 +22,7 @@ const HomeScreen = () => {
     fetchImages();
   }, []);
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     const {
       urls: { regular: imageUrl },
       likes,
@@ -34,6 +35,8 @@ const HomeScreen = () => {
       },
     } = { ...item };
     const caption = description || altDescription;
+    const priority =
+      index < 2 ? FastImage.priority.high : FastImage.priority.normal;
 
     return (
       <Photo
@@ -43,6 +46,7 @@ const HomeScreen = () => {
         caption={caption}
         userName={userName}
         profileImage={profileImage}
+        priority={priority}
       />
     );
   };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import FastImage from 'react-native-fast-image';
 
 import { numberWithCommas, getTimeSince } from '../utils';
 import { colors } from '../globalStyles';
@@ -13,6 +14,7 @@ const Photo = ({
   profileImage,
   caption,
   createdAt,
+  priority = FastImage.priority.normal,
 }) => {
   const {
     container,
@@ -36,7 +38,7 @@ const Photo = ({
         <Text style={boldText}>{userName}</Text>
       </View>
 
-      <Image style={imageStyle} source={{ uri: imageUrl }} />
+      <FastImage style={imageStyle} source={{ uri: imageUrl, priority }} />
       <TouchableOpacity
         style={photoInfoContainer}
         activeOpacity={1}

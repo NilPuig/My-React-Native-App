@@ -1,10 +1,11 @@
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 const Photo = ({ profileImage }) => {
   const { profileImageStyle } = styles;
 
-  return <Image style={profileImageStyle} source={{ uri: profileImage }} />;
+  return <FastImage style={profileImageStyle} source={{ uri: profileImage }} />;
 };
 
 const profileImageWidth = 30;
