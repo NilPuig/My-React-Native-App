@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   activityIndicatorStyle: {
     flex: 1,
     justifyContent: 'center',
-    alignContent: 'center',
+    alignItems: 'center',
   },
 });
 
