@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 import { numberWithCommas, getTimeSince } from '../utils';
 import { colors } from '../globalStyles';
+import Avatar from './Avatar';
 
 const Photo = ({
   imageUrl,
@@ -21,7 +22,6 @@ const Photo = ({
     descriptionContainer,
     timeSinceStyle,
     heartIcon,
-    profileImageStyle,
     userInfoContainer,
   } = styles;
 
@@ -32,7 +32,7 @@ const Photo = ({
   return (
     <View style={container}>
       <View style={userInfoContainer}>
-        <Image style={profileImageStyle} source={{ uri: profileImage }} />
+        <Avatar profileImage={profileImage} />
         <Text style={boldText}>{userName}</Text>
       </View>
 
@@ -66,8 +66,6 @@ const Photo = ({
   );
 };
 
-const profileImageWidth = 30;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -83,12 +81,6 @@ const styles = StyleSheet.create({
   imageStyle: {
     aspectRatio: 1.5,
     width: '100%',
-  },
-  profileImageStyle: {
-    height: profileImageWidth,
-    width: profileImageWidth,
-    borderRadius: profileImageWidth / 2,
-    marginRight: 10,
   },
   photoInfoContainer: {
     margin: 12,
