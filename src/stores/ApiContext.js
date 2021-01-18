@@ -55,8 +55,7 @@ const callImagesApi = async (page) => {
 
   try {
     const imagesUrl = `https://${baseUrlUnsplash}/photos?client_id=${accessKeyUnsplash}&page=${page}`;
-    const res = await fetch(imagesUrl);
-    const data = await res.json();
+    const data = await fetch(imagesUrl);
 
     if (data && Array.isArray(data)) {
       images = data;

@@ -20,7 +20,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     fetchImages();
-  }, []);
+  }, [fetchImages]);
 
   const renderItem = ({ item, index }) => {
     const {

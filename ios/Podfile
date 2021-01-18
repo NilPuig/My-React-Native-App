@@ -10,11 +10,6 @@ target 'MyReactNativeApp' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  target 'MyReactNativeAppTests' do
-    inherit! :complete
-    # Pods for testing
-  end
-
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
@@ -22,14 +17,5 @@ target 'MyReactNativeApp' do
   use_flipper!
   post_install do |installer|
     flipper_post_install(installer)
-  end
-end
-
-target 'MyReactNativeApp-tvOS' do
-  # Pods for MyReactNativeApp-tvOS
-
-  target 'MyReactNativeApp-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
   end
 end
